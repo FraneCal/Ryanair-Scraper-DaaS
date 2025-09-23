@@ -22,9 +22,9 @@ ADULTS = 2
 
 
 def setup_logger():
-    """Configure logging to file inside logs/ folder."""
+    """Configure logging to file inside logs/ folder, with timestamp in filename."""
     os.makedirs("logs", exist_ok=True)
-    log_filename = f"logs/{datetime.today().strftime('%Y-%m-%d')}.log"
+    log_filename = f"logs/{datetime.today().strftime('%Y-%m-%d_%H-%M-%S')}.log"
 
     logging.basicConfig(
         filename=log_filename,
@@ -32,7 +32,7 @@ def setup_logger():
         format="%(asctime)s - %(levelname)s - %(message)s",
         level=logging.INFO,
     )
-    return logging.getLogger()
+    return logging.getLogger(), log_filename
 
 
 def build_ryanair_url(date_out: datetime, stay_days=3, origin="LON", destination="BCN", adults=2):
@@ -105,8 +105,11 @@ def scrape_prices(driver, url):
 
 
 if __name__ == "__main__":
-    logger = setup_logger()
+    start_time = time.time()
+
+    logger, log_filename = setup_logger()
     logger.info("🚀 Scraper started.")
+    logger.info(f"Log file: {log_filename}")
 
     # Setup Selenium Chrome
     chrome_options = Options()
@@ -156,4 +159,6 @@ if __name__ == "__main__":
             logger.info(f"{scrape_datetime} | {days_before_departure}d before | Out:{dep_price} | In:{ret_price}")
 
     driver.quit()
-    logger.info("✅ Scraper finished successfully.")
+
+    duration = round(time.time() - start_time, 2)
+    logger.info(f"✅ Scraper finished successfully in {duration} seconds.")
