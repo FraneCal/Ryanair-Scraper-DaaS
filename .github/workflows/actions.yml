@@ -1,9 +1,10 @@
-name: Run Page Checker
+name: Run Ryanair Scraper
 
 on:
   schedule:
-     Runs every 20 minutess
-     - cron: '*/5 * * * *'
+    # Run every 5 minutes (for testing)
+    - cron: "*/5 * * * *"
+  workflow_dispatch:  # allow manual trigger
 
 jobs:
   run-scraper:
@@ -18,26 +19,33 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: "3.10"
 
-    # Step 3: Install dependencies
+    # Step 3: Install Google Chrome
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    # Step 4: Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install chromedriver-autoinstaller
 
-    # Step 4: Run the Python scraper script
+    # Step 5: Run the Python scraper script
     - name: Run scraper
       run: |
         python main.py
 
-    # Step 5: Commit and push updates
+    # Step 6: Commit and push updates
     - name: Commit and push changes
       uses: EndBug/add-and-commit@v9
       with:
-        author_name: 'github-actions'
-        author_email: 'github-actions@github.com'
-        message: 'Update visit log'
-        add: 'visit_log.txt'
+        author_name: "github-actions"
+        author_email: "github-actions@github.com"
+        message: "Update Ryanair scrape data"
+        add: "ryanair_countdown.csv logs/"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
