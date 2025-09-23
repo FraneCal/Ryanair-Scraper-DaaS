@@ -2,8 +2,10 @@ name: Run Ryanair Scraper
 
 on:
   schedule:
-    # Run every 5 minutes (for testing)
-    - cron: '*/5 * * * *'
+    # Run every day at 10:00 UTC
+    - cron: "0 10 * * *"
+    # Run every day at 18:00 UTC
+    - cron: "0 18 * * *"
   workflow_dispatch:  # allow manual trigger
 
 jobs:
