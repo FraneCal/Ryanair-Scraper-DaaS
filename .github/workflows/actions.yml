@@ -48,6 +48,6 @@ jobs:
         author_name: "github-actions"
         author_email: "github-actions@github.com"
         message: "Update Ryanair scrape data"
-        add: "ryanair_countdown.csv logs/"
+        add: "ryanair_LON_BCN.csv logs/"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
