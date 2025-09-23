@@ -126,7 +126,7 @@ if __name__ == "__main__":
         # Header only if file is new
         if not file_exists:
             writer.writerow([
-                "scrape_date",
+                "scrape_datetime",  # now includes both date and time
                 "days_before_departure",
                 "date_out",
                 "date_in",
@@ -134,26 +134,26 @@ if __name__ == "__main__":
                 "return_price"
             ])
 
-        today = datetime.today()
-        scrape_date = today.strftime("%Y-%m-%d")
+        now = datetime.now()
+        scrape_datetime = now.strftime("%Y-%m-%d %H:%M:%S")
 
         # How many days left to scrape? (30 down to 0)
-        days_passed = (today.date() - START_DATE.date()).days
+        days_passed = (now.date() - START_DATE.date()).days
         days_left = max(30 - days_passed, 0)
 
         logger.info(f"Scraping window: {days_left} days ahead")
 
         for i in range(days_left, -1, -1):
-            dep_date = today + timedelta(days=i)
+            dep_date = now + timedelta(days=i)
             url, date_out, date_in = build_ryanair_url(dep_date, stay_days=STAY_DAYS,
                                                        origin=ORIGIN, destination=DESTINATION, adults=ADULTS)
 
             dep_price, ret_price = scrape_prices(driver, url)
 
-            days_before_departure = (dep_date - today).days
-            writer.writerow([scrape_date, days_before_departure, date_out, date_in, dep_price, ret_price])
+            days_before_departure = (dep_date - now).days
+            writer.writerow([scrape_datetime, days_before_departure, date_out, date_in, dep_price, ret_price])
 
-            logger.info(f"{scrape_date} | {days_before_departure}d before | Out:{dep_price} | In:{ret_price}")
+            logger.info(f"{scrape_datetime} | {days_before_departure}d before | Out:{dep_price} | In:{ret_price}")
 
     driver.quit()
     logger.info("✅ Scraper finished successfully.")
