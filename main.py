@@ -117,7 +117,7 @@ if __name__ == "__main__":
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # CSV file
-    filename = "ryanair_countdown.csv"
+    filename = "ryanair_LON_BCN.csv"
     file_exists = os.path.isfile(filename)
 
     with open(filename, "a", newline="", encoding="utf-8") as f:
