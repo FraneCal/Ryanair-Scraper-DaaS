@@ -1,0 +1,5 @@
+2025-11-20 10:12:54,614 - INFO - 🚀 Scraper started.
+2025-11-20 10:12:54,614 - INFO - Log file: logs/2025-11-20_10-12-54.log
+2025-11-20 10:12:55,516 - INFO - Scraping window: 0 days ahead
+2025-11-20 10:13:00,685 - INFO - 2025-11-20 10:12:55 | 0d before | Out:135.99 | In:101.99
+2025-11-20 10:13:00,746 - INFO - ✅ Scraper finished successfully in 6.13 seconds.
